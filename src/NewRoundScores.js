@@ -22,10 +22,15 @@ function NewRoundScores(props) {
   ]);
 
   const useStyles = makeStyles((theme) => ({
-    fab: {
+    right: {
       position: "absolute",
       bottom: theme.spacing(2),
       right: theme.spacing(2),
+    },
+    left: {
+      position: "absolute",
+      bottom: theme.spacing(2),
+      left: theme.spacing(2),
     },
   }));
 
@@ -44,8 +49,11 @@ function NewRoundScores(props) {
   }, [props.game.players]);
 
   const saveNewRound = () => {
-    console.log("save");
     props.saveNewRound(inputList);
+  };
+
+  const closeView = () => {
+    props.closeView();
   };
 
   const handleChange = (event) => {
@@ -78,7 +86,15 @@ function NewRoundScores(props) {
       <Button
         variant="contained"
         color="primary"
-        className={classes.fab}
+        className={classes.left}
+        onClick={closeView}
+      >
+        Cancel
+      </Button>
+      <Button
+        variant="contained"
+        color="primary"
+        className={classes.right}
         onClick={saveNewRound}
       >
         Save

@@ -6,6 +6,7 @@ import Button from "@material-ui/core/Button";
 import axios from "axios";
 import ScoreBoard from "./ScoreBoard";
 import NewGame from "./NewGame";
+import NewGameWarning from "./NewGameWarning";
 import NewRoundScores from "./NewRoundScores";
 import ShareGame from "./ShareGame";
 
@@ -45,6 +46,11 @@ function App() {
     setAppView("newGame");
   };
 
+  const newGameWarning = (e) => {
+    setGame(null);
+    setAppView("newGame");
+  };
+
   const shareGame = (e) => {
     setAppView("shareGame");
   };
@@ -53,7 +59,7 @@ function App() {
     setAppView("newRound");
   };
 
-  const setGameView = () => {
+  const setGameView = (e) => {
     setAppView("game");
   };
 
@@ -100,12 +106,10 @@ function App() {
       },
     };
 
-    console.log(newRound);
-
     axios.post(`http://localhost:1337/game/new-round`, newRound).then((res) => {
       console.log(res);
       setGame(res.data);
-      setGameView();
+      setGameView(null);
     });
   };
 
@@ -119,7 +123,22 @@ function App() {
       return <ShareGame url={url} closeView={setGameView}></ShareGame>;
     }
     if (appView === "newGame") {
-      return <NewGame startNewGame={startNewGame}></NewGame>;
+      if (game) {
+        return (
+          <NewGameWarning
+            backToActiveGame={setGameView}
+            startNewGame={newGameWarning}
+          ></NewGameWarning>
+        );
+      } else {
+        return (
+          <NewGame
+            game={game}
+            startNewGame={startNewGame}
+            closeView={setGameView}
+          ></NewGame>
+        );
+      }
     } else if (appView === "newRound") {
       return (
         <NewRoundScores
