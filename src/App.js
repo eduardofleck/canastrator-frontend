@@ -1,36 +1,60 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import "./App.css";
 import AppBar from "@material-ui/core/AppBar";
 import Toolbar from "@material-ui/core/Toolbar";
 import Button from "@material-ui/core/Button";
+import axios from "axios";
 import ScoreBoard from "./ScoreBoard";
 import NewGame from "./NewGame";
-import axios from "axios";
 import NewRoundScores from "./NewRoundScores";
+import ShareGame from "./ShareGame";
 
 function App() {
-  const [game, setGame] = React.useState({
+  const [game, setGame] = useState({
     players: [],
     name: "",
   });
 
-  const [appView, setAppView] = React.useState("game");
+  const [appView, setAppView] = useState("game");
 
-  const loadGame = (e) => {
-    console.log("Load game");
+  useEffect(() => {
+    if (window.location.pathname) {
+      //Validates if is token?
+      loadGame(window.location.pathname.replace("/", ""));
+    }
+  }, []);
+
+  const loadGame = (token) => {
+    console.log(token);
     setAppView("game");
-    axios.get(`http://localhost:1337/game/full/1`).then((res) => {
+    axios.get(`http://localhost:1337/game/full/${token}`).then((res) => {
       console.log(res);
       setGame(res.data);
+      addTokenUrl(res.data.token);
     });
+  };
+
+  const addTokenUrl = (token) => {
+    var refresh =
+      window.location.protocol + "//" + window.location.host + "/" + token;
+
+    window.history.pushState({ path: refresh }, "", refresh);
   };
 
   const newGame = (e) => {
     setAppView("newGame");
   };
 
+  const shareGame = (e) => {
+    setAppView("shareGame");
+  };
+
   const newRound = (e) => {
     setAppView("newRound");
+  };
+
+  const setGameView = () => {
+    setAppView("game");
   };
 
   const startNewGame = (newPlayers) => {
@@ -53,7 +77,8 @@ function App() {
     axios.post(`http://localhost:1337/game/new-game`, newGame).then((res) => {
       console.log(res);
       setGame(res.data);
-      setAppView("game");
+      addTokenUrl(res.data.token);
+      setGameView();
     });
   };
 
@@ -80,11 +105,19 @@ function App() {
     axios.post(`http://localhost:1337/game/new-round`, newRound).then((res) => {
       console.log(res);
       setGame(res.data);
-      setAppView("game");
+      setGameView();
     });
   };
 
   const gameGrid = () => {
+    if (appView === "shareGame") {
+      var url =
+        window.location.protocol +
+        "//" +
+        window.location.host +
+        window.location.pathname;
+      return <ShareGame url={url} closeView={setGameView}></ShareGame>;
+    }
     if (appView === "newGame") {
       return <NewGame startNewGame={startNewGame}></NewGame>;
     } else if (appView === "newRound") {
@@ -92,6 +125,7 @@ function App() {
         <NewRoundScores
           game={game}
           saveNewRound={saveNewRound}
+          closeView={setGameView}
         ></NewRoundScores>
       );
     } else if (appView === "game") {
@@ -106,8 +140,8 @@ function App() {
           <Button onClick={newGame} color="inherit">
             New Game
           </Button>
-          <Button onClick={loadGame} color="inherit">
-            Load game
+          <Button onClick={shareGame} color="inherit">
+            Share Game
           </Button>
         </Toolbar>
       </AppBar>
