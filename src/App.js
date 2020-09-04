@@ -123,7 +123,7 @@ function App() {
       return <ShareGame url={url} closeView={setGameView}></ShareGame>;
     }
     if (appView === "newGame") {
-      if (game) {
+      if (game.token) {
         return (
           <NewGameWarning
             backToActiveGame={setGameView}
