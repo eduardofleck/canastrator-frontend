@@ -28,7 +28,7 @@ function App() {
   const loadGame = (token) => {
     console.log(token);
     setAppView("game");
-    axios.get(`http://localhost:1337/game/full/${token}`).then((res) => {
+    axios.get(`/game/full/${token}`).then((res) => {
       console.log(res);
       setGame(res.data);
       addTokenUrl(res.data.token);
@@ -80,7 +80,7 @@ function App() {
 
     console.log(newGame);
 
-    axios.post(`http://localhost:1337/game/new-game`, newGame).then((res) => {
+    axios.post(`/game/new-game`, newGame).then((res) => {
       console.log(res);
       setGame(res.data);
       addTokenUrl(res.data.token);
@@ -106,7 +106,7 @@ function App() {
       },
     };
 
-    axios.post(`http://localhost:1337/game/new-round`, newRound).then((res) => {
+    axios.post(`/game/new-round`, newRound).then((res) => {
       console.log(res);
       setGame(res.data);
       setGameView(null);
