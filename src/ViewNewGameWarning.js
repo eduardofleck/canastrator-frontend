@@ -17,7 +17,7 @@ const NeGameGrid = styled.div`
   }
 `;
 
-function NewGameWarning(props) {
+function ViewNewGameWarning(props) {
   const useStyles = makeStyles((theme) => ({
     right: {
       position: "absolute",
@@ -67,4 +67,4 @@ function NewGameWarning(props) {
   );
 }
 
-export default NewGameWarning;
+export default ViewNewGameWarning;

@@ -16,7 +16,7 @@ const Score = styled.div`
   padding: 5px;
 `;
 
-function NewRoundScores(props) {
+function ViewNewRoundScores(props) {
   const [inputList, setInputList] = useState([
     { playerId: "", playerValue: "" },
   ]);
@@ -103,4 +103,4 @@ function NewRoundScores(props) {
   );
 }
 
-export default NewRoundScores;
+export default ViewNewRoundScores;

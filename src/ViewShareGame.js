@@ -19,7 +19,7 @@ const ButtonCopyUrl = styled.div`
   justify-items: center;
 `;
 
-function ShareGame(props) {
+function ViewShareGame(props) {
   const [qrCodeData, setQrCodeData] = useState("");
 
   useEffect(() => {
@@ -71,4 +71,4 @@ function ShareGame(props) {
   );
 }
 
-export default ShareGame;
+export default ViewShareGame;

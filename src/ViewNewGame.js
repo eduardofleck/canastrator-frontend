@@ -21,7 +21,7 @@ const NewPlayerButtonDiv = styled.div`
   justify-items: center;
 `;
 
-function NewGame(props) {
+function ViewNewGame(props) {
   const [playersList, setPlayersList] = useState([
     { name: "", id: 1 },
     { name: "", id: 2 },
@@ -96,4 +96,4 @@ function NewGame(props) {
   );
 }
 
-export default NewGame;
+export default ViewNewGame;

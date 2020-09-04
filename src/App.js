@@ -5,10 +5,11 @@ import Toolbar from "@material-ui/core/Toolbar";
 import Button from "@material-ui/core/Button";
 import axios from "axios";
 import ScoreBoard from "./ScoreBoard";
-import NewGame from "./NewGame";
-import NewGameWarning from "./NewGameWarning";
-import NewRoundScores from "./NewRoundScores";
-import ShareGame from "./ShareGame";
+import ViewNewGame from "./ViewNewGame";
+import ViewNewGameWarning from "./ViewNewGameWarning";
+import ViewNewRoundScores from "./ViewNewRoundScores";
+import ViewShareGame from "./ViewShareGame";
+import ViewWelcome from "./ViewWelcome";
 
 function App() {
   const [game, setGame] = useState({
@@ -19,9 +20,11 @@ function App() {
   const [appView, setAppView] = useState("game");
 
   useEffect(() => {
-    if (window.location.pathname) {
+    if (window.location.pathname.replace("/", "") != "") {
       //Validates if is token?
       loadGame(window.location.pathname.replace("/", ""));
+    } else {
+      setAppView("welcome");
     }
   }, []);
 
@@ -114,38 +117,40 @@ function App() {
   };
 
   const gameGrid = () => {
-    if (appView === "shareGame") {
+    if (appView === "welcome") {
+      return <ViewWelcome startNewGame={newGame}></ViewWelcome>;
+    } else if (appView === "shareGame") {
       var url =
         window.location.protocol +
         "//" +
         window.location.host +
         window.location.pathname;
-      return <ShareGame url={url} closeView={setGameView}></ShareGame>;
+      return <ViewShareGame url={url} closeView={setGameView}></ViewShareGame>;
     }
     if (appView === "newGame") {
       if (game.token) {
         return (
-          <NewGameWarning
+          <ViewNewGameWarning
             backToActiveGame={setGameView}
             startNewGame={newGameWarning}
-          ></NewGameWarning>
+          ></ViewNewGameWarning>
         );
       } else {
         return (
-          <NewGame
+          <ViewNewGame
             game={game}
             startNewGame={startNewGame}
             closeView={setGameView}
-          ></NewGame>
+          ></ViewNewGame>
         );
       }
     } else if (appView === "newRound") {
       return (
-        <NewRoundScores
+        <ViewNewRoundScores
           game={game}
           saveNewRound={saveNewRound}
           closeView={setGameView}
-        ></NewRoundScores>
+        ></ViewNewRoundScores>
       );
     } else if (appView === "game") {
       return <ScoreBoard game={game} newRound={newRound}></ScoreBoard>;
