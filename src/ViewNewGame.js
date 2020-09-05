@@ -3,6 +3,7 @@ import styled from "styled-components";
 import TextField from "@material-ui/core/TextField";
 import { makeStyles, useTheme } from "@material-ui/core/styles";
 import Button from "@material-ui/core/Button";
+import { withTranslation, Trans } from "react-i18next";
 
 const NeGameGrid = styled.div`
   display: grid;
@@ -63,7 +64,10 @@ function ViewNewGame(props) {
       <NeGameGrid>
         {playersList.map((player) => (
           <PlayerDiv key={player.id}>
-            <h3>Player {player.id} Name:</h3>
+            <h3>
+              <Trans>generic.player</Trans> {player.id}{" "}
+              <Trans>generic.name</Trans>:
+            </h3>
             <TextField
               name={player.id}
               value={player.name}
@@ -80,7 +84,7 @@ function ViewNewGame(props) {
             color="primary"
             onClick={newPlayer}
           >
-            Add Player
+            <Trans>newGame.addPlayer</Trans>
           </Button>
         </NewPlayerButtonDiv>
       </NeGameGrid>
@@ -90,7 +94,7 @@ function ViewNewGame(props) {
         className={classes.fab}
         onClick={startNewGame}
       >
-        Let`s play
+        <Trans>generic.letsPlay</Trans>
       </Button>
     </div>
   );

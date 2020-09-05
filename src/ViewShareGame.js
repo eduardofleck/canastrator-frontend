@@ -4,6 +4,7 @@ import TextField from "@material-ui/core/TextField";
 import { makeStyles, useTheme } from "@material-ui/core/styles";
 import Button from "@material-ui/core/Button";
 import QRCode from "qrcode";
+import { withTranslation, Trans } from "react-i18next";
 
 const ShareGameGrid = styled.div`
   display: grid;
@@ -50,12 +51,18 @@ function ViewShareGame(props) {
     <div>
       <ShareGameGrid>
         <ButtonCopyUrl>
-          <h1>Share this game</h1>
-          <h2>Point your cellphone camera to this QRCode</h2>
+          <h1>
+            <Trans>share.shareThisGame</Trans>
+          </h1>
+          <h2>
+            <Trans>share.pointCellQRCode</Trans>
+          </h2>
           <img src={qrCodeData} className="card-img-top" alt="Game QRCode" />
-          <h2>or copy the URL and share</h2>
+          <h2>
+            <Trans>share.copyURLAndShare</Trans>
+          </h2>
           <Button variant="contained" color="primary">
-            Copy URL
+            <Trans>share.copyURL</Trans>
           </Button>
         </ButtonCopyUrl>
       </ShareGameGrid>
@@ -65,7 +72,7 @@ function ViewShareGame(props) {
         className={classes.fab}
         onClick={closeView}
       >
-        Close
+        <Trans>generic.close</Trans>
       </Button>
     </div>
   );

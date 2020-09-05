@@ -1,0 +1,37 @@
+{
+  "translations": {
+    "menu": {
+      "newGame": "New Game",
+      "shareGame": "Share Game"
+    },
+    "welcome": {
+      "createNewGame": "Create a new game",
+      "shareWithFriend": "Share it with a friend",
+      "addPoints": "Add points",
+      "goodGame": "Good game!"
+    },
+    "newGame": {
+      "addPlayer": "Add Player"
+    },
+    "newGameWarning": {
+      "gameActiveTittle": "You already have and active game",
+      "doWannaStartAnyways": "Do you wanna start a new game anywais?"
+    },
+    "share": {
+      "shareThisGame": "Share this game",
+      "pointCellQRCode": "Point your cell to this QRCode",
+      "copyURLAndShare": "or copy the URL and share it",
+      "copyURL": "Copy URL"
+    },
+    "generic": {
+      "name": "Name",
+      "close": "Close",
+      "letsPlay": "Let`s play",
+      "score": "Score",
+      "save": "save",
+      "no": "no",
+      "yes": "yes",
+      "player": "player"
+    }
+  }
+}

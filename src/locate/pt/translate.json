@@ -1,0 +1,30 @@
+{
+  "translations": {
+    "menu": {
+      "newGame": "Novo jogo",
+      "shareGame": "Compartilhar"
+    },
+    "welcome": {
+      "createNewGame": "Criar um novo jogo",
+      "shareWithFriend": "Compartilhe com um amigo",
+      "addPoints": "Adicione pontos",
+      "goodGame": "Bom jogo!"
+    },
+    "newGame": {
+      "player": "Jogador",
+      "addPlayer": "Mais um jogador"
+    },
+    "share": {
+      "shareThisGame": "Compartilhar este jogo",
+      "pointCellQRCode": "Leia este QRCode com a câmera do celular",
+      "copyURLAndShare": "ou copie a URL e compartilhe",
+      "copyURL": "Copiar URL"
+    },
+    "generic": {
+      "name": "Nome",
+      "close": "Fechar",
+      "letsPlay": "Jogar",
+      "score": "Pontuação"
+    }
+  }
+}

@@ -10,14 +10,29 @@ import ViewNewGameWarning from "./ViewNewGameWarning";
 import ViewNewRoundScores from "./ViewNewRoundScores";
 import ViewShareGame from "./ViewShareGame";
 import ViewWelcome from "./ViewWelcome";
+import { withTranslation, Trans } from "react-i18next";
+import MenuItem from "@material-ui/core/MenuItem";
+import Select from "@material-ui/core/Select";
+import styled from "styled-components";
+import flagBR from "./images/flagBR.png";
+import flagUK from "./images/flagUK.png";
 
-function App() {
+const Flag = styled.img`
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  width: 32px;
+`;
+
+function App(props) {
   const [game, setGame] = useState({
     players: [],
     name: "",
   });
 
   const [appView, setAppView] = useState("game");
+
+  const [language, setLanguage] = useState("en");
 
   useEffect(() => {
     if (window.location.pathname.replace("/", "") != "") {
@@ -45,6 +60,11 @@ function App() {
     window.history.pushState({ path: refresh }, "", refresh);
   };
 
+  const onLanguageChange = (e) => {
+    let newLang = e.target.value;
+    setLanguage(newLang);
+    props.i18n.changeLanguage(newLang);
+  };
   const newGame = (e) => {
     setAppView("newGame");
   };
@@ -162,11 +182,24 @@ function App() {
       <AppBar position="static">
         <Toolbar>
           <Button onClick={newGame} color="inherit">
-            New Game
+            <Trans>menu.newGame</Trans>
           </Button>
           <Button onClick={shareGame} color="inherit">
-            Share Game
+            <Trans>menu.shareGame</Trans>
           </Button>
+          <Select
+            labelId="demo-customized-select-label"
+            id="demo-customized-select"
+            value={language}
+            onChange={onLanguageChange}
+          >
+            <MenuItem value="en">
+              <Flag src={flagUK} />
+            </MenuItem>
+            <MenuItem value="pt">
+              <Flag src={flagBR} />
+            </MenuItem>
+          </Select>
         </Toolbar>
       </AppBar>
       <div>{gameGrid()}</div>
@@ -174,4 +207,4 @@ function App() {
   );
 }
 
-export default App;
+export default withTranslation()(App);

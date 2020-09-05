@@ -5,6 +5,7 @@ import { makeStyles, useTheme } from "@material-ui/core/styles";
 import Button from "@material-ui/core/Button";
 import Fab from "@material-ui/core/Fab";
 import AddIcon from "@material-ui/icons/Add";
+import { withTranslation, Trans } from "react-i18next";
 
 const WelcomeGrid = styled.div`
   display: grid;
@@ -63,21 +64,27 @@ function ViewWelcome(props) {
         <LineNewGame>
           <h2>1. </h2>
           <Button variant="contained" color="primary" onClick={newGame}>
-            Create a new game
+            <Trans>welcome.createNewGame</Trans>
           </Button>
         </LineNewGame>
         <LineShare>
-          <h2>2. Share it a with friend</h2>
+          <h2>
+            2. <Trans>welcome.shareWithFriend</Trans>
+          </h2>
         </LineShare>
         <LineAddPoints>
           <h2>3. </h2>
           <Fab size="small" color="secondary" aria-label="add">
             <AddIcon />
           </Fab>
-          <h2>Add points</h2>
+          <h2>
+            <Trans>welcome.addPoints</Trans>
+          </h2>
         </LineAddPoints>
         <LineFun>
-          <h2>4. Good game!</h2>
+          <h2>
+            4. <Trans>welcome.goodGame</Trans>
+          </h2>
         </LineFun>
       </LinesGrid>
     </WelcomeGrid>

@@ -3,6 +3,7 @@ import styled from "styled-components";
 import TextField from "@material-ui/core/TextField";
 import { makeStyles } from "@material-ui/core/styles";
 import Button from "@material-ui/core/Button";
+import { withTranslation, Trans } from "react-i18next";
 
 const NewRoundScoresGrid = styled.div`
   display: grid;
@@ -89,7 +90,7 @@ function ViewNewRoundScores(props) {
         className={classes.left}
         onClick={closeView}
       >
-        Cancel
+        <Trans>generic.close</Trans>
       </Button>
       <Button
         variant="contained"
@@ -97,7 +98,7 @@ function ViewNewRoundScores(props) {
         className={classes.right}
         onClick={saveNewRound}
       >
-        Save
+        <Trans>generic.save</Trans>
       </Button>
     </div>
   );

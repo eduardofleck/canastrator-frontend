@@ -3,6 +3,7 @@ import styled from "styled-components";
 import TextField from "@material-ui/core/TextField";
 import { makeStyles, useTheme } from "@material-ui/core/styles";
 import Button from "@material-ui/core/Button";
+import { withTranslation, Trans } from "react-i18next";
 
 const NeGameGrid = styled.div`
   display: grid;
@@ -44,8 +45,12 @@ function ViewNewGameWarning(props) {
   return (
     <div>
       <NeGameGrid>
-        <h2>You already have and active game</h2>
-        <h3>Do you wanna start a new game anywais?</h3>
+        <h2>
+          <Trans>newGameWarning.gameActiveTittle</Trans>
+        </h2>
+        <h3>
+          <Trans>newGameWarning.doWannaStartAnyways</Trans>
+        </h3>
       </NeGameGrid>
       <Button
         variant="contained"
@@ -53,7 +58,7 @@ function ViewNewGameWarning(props) {
         className={classes.left}
         onClick={backToActiveGame}
       >
-        No
+        <Trans>generic.no</Trans>
       </Button>
       <Button
         variant="contained"
@@ -61,7 +66,7 @@ function ViewNewGameWarning(props) {
         className={classes.right}
         onClick={startNewGame}
       >
-        Let`s play
+        <Trans>generic.letsPlay</Trans>
       </Button>
     </div>
   );
