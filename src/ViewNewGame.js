@@ -4,6 +4,7 @@ import TextField from "@material-ui/core/TextField";
 import { makeStyles, useTheme } from "@material-ui/core/styles";
 import Button from "@material-ui/core/Button";
 import { withTranslation, Trans } from "react-i18next";
+import { ValidatorForm } from "react-material-ui-form-validator";
 
 const NeGameGrid = styled.div`
   display: grid;
@@ -34,6 +35,9 @@ function ViewNewGame(props) {
       bottom: theme.spacing(2),
       right: theme.spacing(2),
     },
+    textInput: {
+      width: "100%",
+    },
   }));
 
   const classes = useStyles();
@@ -55,47 +59,53 @@ function ViewNewGame(props) {
     setPlayersList([...playersList]);
   };
 
-  const startNewGame = (event) => {
+  const handleSubmit = (event) => {
     props.startNewGame(playersList);
   };
 
   return (
     <div>
-      <NeGameGrid>
-        {playersList.map((player) => (
-          <PlayerDiv key={player.id}>
-            <h3>
-              <Trans>generic.player</Trans> {player.id}{" "}
-              <Trans>generic.name</Trans>:
-            </h3>
-            <TextField
-              name={player.id}
-              value={player.name}
-              onChange={handleChange}
-              label="Name"
-              variant="outlined"
-            />
-          </PlayerDiv>
-        ))}
-        <NewPlayerButtonDiv>
-          <Button
-            className={classes.newPlayer}
-            variant="contained"
-            color="primary"
-            onClick={newPlayer}
-          >
-            <Trans>newGame.addPlayer</Trans>
-          </Button>
-        </NewPlayerButtonDiv>
-      </NeGameGrid>
-      <Button
-        variant="contained"
-        color="primary"
-        className={classes.fab}
-        onClick={startNewGame}
+      <ValidatorForm
+        onSubmit={handleSubmit}
+        onError={(errors) => console.log(errors)}
       >
-        <Trans>generic.letsPlay</Trans>
-      </Button>
+        <NeGameGrid>
+          {playersList.map((player) => (
+            <PlayerDiv key={player.id}>
+              <h3>
+                <Trans>generic.player</Trans> {player.id}:
+              </h3>
+              <TextField
+                className={classes.textInput}
+                name={player.id}
+                value={player.name}
+                onChange={handleChange}
+                required
+                label="Name"
+                variant="outlined"
+              />
+            </PlayerDiv>
+          ))}
+          <NewPlayerButtonDiv>
+            <Button
+              className={classes.newPlayer}
+              variant="contained"
+              color="primary"
+              onClick={newPlayer}
+            >
+              <Trans>newGame.addPlayer</Trans>
+            </Button>
+          </NewPlayerButtonDiv>
+        </NeGameGrid>
+        <Button
+          type="submit"
+          variant="contained"
+          color="primary"
+          className={classes.fab}
+        >
+          <Trans>generic.letsPlay</Trans>
+        </Button>
+      </ValidatorForm>
     </div>
   );
 }

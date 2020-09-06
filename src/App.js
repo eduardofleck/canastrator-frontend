@@ -66,9 +66,7 @@ function App(props) {
   const addTokenUrl = (token) => {
     var refresh =
       window.location.protocol + "//" + window.location.host + "/" + token;
-
     if (window.location.search) refresh = refresh + window.location.search;
-
     window.history.pushState({ path: refresh }, "", refresh);
   };
 
@@ -139,7 +137,6 @@ function App(props) {
     };
 
     setSpinner(true);
-
     axios
       .post(`/game/new-game`, newGame)
       .then((res) => {
@@ -202,7 +199,7 @@ function App(props) {
       );
     }
     if (appView === "newGame") {
-      if (game.token) {
+      if (game && game.token) {
         return (
           <ViewNewGameWarning
             backToActiveGame={setGameView}
@@ -242,7 +239,7 @@ function App(props) {
           <Button onClick={newGame} color="inherit">
             <Trans>menu.newGame</Trans>
           </Button>
-          <Button onClick={shareGame} color="inherit">
+          <Button onClick={shareGame} color="inherit" disabled={!game.token}>
             <Trans>menu.shareGame</Trans>
           </Button>
           <Select
@@ -252,6 +249,7 @@ function App(props) {
             id="demo-customized-select"
             value={language}
             onChange={onLanguageChange}
+            size="small"
           >
             <MenuItem value="en">
               <Flag src={flagUK} />

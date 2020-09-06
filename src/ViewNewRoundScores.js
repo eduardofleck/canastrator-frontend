@@ -4,6 +4,7 @@ import TextField from "@material-ui/core/TextField";
 import { makeStyles } from "@material-ui/core/styles";
 import Button from "@material-ui/core/Button";
 import { withTranslation, Trans } from "react-i18next";
+import { ValidatorForm } from "react-material-ui-form-validator";
 
 const NewRoundScoresGrid = styled.div`
   display: grid;
@@ -33,6 +34,9 @@ function ViewNewRoundScores(props) {
       bottom: theme.spacing(2),
       left: theme.spacing(2),
     },
+    textInput: {
+      width: "100%",
+    },
   }));
 
   const classes = useStyles();
@@ -49,7 +53,7 @@ function ViewNewRoundScores(props) {
     setInputList(playersState);
   }, [props.game.players]);
 
-  const saveNewRound = () => {
+  const handleSubmit = () => {
     props.saveNewRound(inputList);
   };
 
@@ -70,36 +74,44 @@ function ViewNewRoundScores(props) {
 
   return (
     <div>
-      <NewRoundScoresGrid>
-        {inputList.map((player) => (
-          <Score key={player.playerId}>
-            <h3>{player.playerName}</h3>
-            <TextField
-              name={player.playerId}
-              value={player.playerScore}
-              onChange={handleChange}
-              label="Score"
-              variant="outlined"
-            />
-          </Score>
-        ))}
-      </NewRoundScoresGrid>
-      <Button
-        variant="contained"
-        color="primary"
-        className={classes.left}
-        onClick={closeView}
+      <ValidatorForm
+        onSubmit={handleSubmit}
+        onError={(errors) => console.log(errors)}
       >
-        <Trans>generic.close</Trans>
-      </Button>
-      <Button
-        variant="contained"
-        color="primary"
-        className={classes.right}
-        onClick={saveNewRound}
-      >
-        <Trans>generic.save</Trans>
-      </Button>
+        <NewRoundScoresGrid>
+          {inputList.map((player) => (
+            <Score key={player.playerId}>
+              <h3>{player.playerName}</h3>
+              <TextField
+                className={classes.textInput}
+                name={player.playerId}
+                value={player.playerScore}
+                required
+                type="number"
+                onChange={handleChange}
+                label="Score"
+                variant="outlined"
+              />
+            </Score>
+          ))}
+        </NewRoundScoresGrid>
+        <Button
+          variant="contained"
+          color="primary"
+          className={classes.left}
+          onClick={closeView}
+        >
+          <Trans>generic.close</Trans>
+        </Button>
+        <Button
+          type="submit"
+          variant="contained"
+          color="primary"
+          className={classes.right}
+        >
+          <Trans>generic.save</Trans>
+        </Button>
+      </ValidatorForm>
     </div>
   );
 }

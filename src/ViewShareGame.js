@@ -5,6 +5,7 @@ import { makeStyles, useTheme } from "@material-ui/core/styles";
 import Button from "@material-ui/core/Button";
 import QRCode from "qrcode";
 import { withTranslation, Trans } from "react-i18next";
+import { CopyToClipboard } from "react-copy-to-clipboard";
 
 const ShareGameGrid = styled.div`
   display: grid;
@@ -61,9 +62,11 @@ function ViewShareGame(props) {
           <h2>
             <Trans>share.copyURLAndShare</Trans>
           </h2>
-          <Button variant="contained" color="primary">
-            <Trans>share.copyURL</Trans>
-          </Button>
+          <CopyToClipboard text={props.url}>
+            <Button variant="contained" color="primary">
+              <Trans>share.copyURL</Trans>
+            </Button>
+          </CopyToClipboard>
         </ButtonCopyUrl>
       </ShareGameGrid>
       <Button
