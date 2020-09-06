@@ -1,24 +1,25 @@
 import React, { useState, useEffect } from "react";
-import "./App.css";
+import axios from "axios";
+import { makeStyles, useTheme } from "@material-ui/core/styles";
+import { withTranslation, Trans } from "react-i18next";
+import styled from "styled-components";
+import Snackbar from "@material-ui/core/Snackbar";
+import MuiAlert from "@material-ui/lab/Alert";
+import Backdrop from "@material-ui/core/Backdrop";
+import CircularProgress from "@material-ui/core/CircularProgress";
+import MenuItem from "@material-ui/core/MenuItem";
+import Select from "@material-ui/core/Select";
 import AppBar from "@material-ui/core/AppBar";
 import Toolbar from "@material-ui/core/Toolbar";
 import Button from "@material-ui/core/Button";
-import axios from "axios";
 import ScoreBoard from "./ScoreBoard";
 import ViewNewGame from "./ViewNewGame";
 import ViewNewGameWarning from "./ViewNewGameWarning";
 import ViewNewRoundScores from "./ViewNewRoundScores";
 import ViewShareGame from "./ViewShareGame";
 import ViewWelcome from "./ViewWelcome";
-import { withTranslation, Trans } from "react-i18next";
-import MenuItem from "@material-ui/core/MenuItem";
-import Select from "@material-ui/core/Select";
-import styled from "styled-components";
 import flagBR from "./images/flagBR.png";
 import flagUK from "./images/flagUK.png";
-import { makeStyles, useTheme } from "@material-ui/core/styles";
-import Snackbar from "@material-ui/core/Snackbar";
-import MuiAlert from "@material-ui/lab/Alert";
 
 const Flag = styled.img`
   display: block;
@@ -36,12 +37,17 @@ function App(props) {
   const [appView, setAppView] = useState("game");
   const [language, setLanguage] = useState("en");
   const [isErrorToastOpen, setErrorToastOpen] = useState(false);
+  const [isSpinnerOn, setSpinner] = useState(false);
   const [lastError, setLastError] = useState("");
 
   const useStyles = makeStyles((theme) => ({
     absoluteRight: {
       position: "absolute",
       right: theme.spacing(2),
+    },
+    backdrop: {
+      zIndex: theme.zIndex.drawer + 1,
+      color: "#fff",
     },
   }));
 
@@ -56,21 +62,6 @@ function App(props) {
     }
     setLanguage(props.i18n.language);
   }, []);
-
-  const loadGame = (token) => {
-    setAppView("game");
-    axios
-      .get(`/game/full/${token}`)
-      .then((res) => {
-        setGame(res.data);
-        addTokenUrl(res.data.token);
-      })
-      .catch(function (error) {
-        setLastError(error);
-        setErrorToastOpen(true);
-        return Promise.reject(error);
-      });
-  };
 
   const addTokenUrl = (token) => {
     var refresh =
@@ -113,6 +104,25 @@ function App(props) {
     setAppView("game");
   };
 
+  const loadGame = (token) => {
+    setAppView("game");
+    setSpinner(true);
+    axios
+      .get(`/game/full/${token}`)
+      .then((res) => {
+        setGame(res.data);
+        addTokenUrl(res.data.token);
+      })
+      .catch(function (error) {
+        setLastError(error);
+        setErrorToastOpen(true);
+        return Promise.reject(error);
+      })
+      .finally(function (error) {
+        setSpinner(false);
+      });
+  };
+
   const startNewGame = (newPlayers) => {
     var players = [];
     newPlayers.forEach((player) => {
@@ -128,6 +138,8 @@ function App(props) {
       },
     };
 
+    setSpinner(true);
+
     axios
       .post(`/game/new-game`, newGame)
       .then((res) => {
@@ -139,6 +151,9 @@ function App(props) {
         setLastError(error);
         setErrorToastOpen(true);
         return Promise.reject(error);
+      })
+      .finally(function (error) {
+        setSpinner(false);
       });
   };
 
@@ -158,6 +173,7 @@ function App(props) {
       },
     };
 
+    setSpinner(true);
     axios
       .post(`/game/new-round`, newRound)
       .then((res) => {
@@ -168,6 +184,9 @@ function App(props) {
         setLastError(error);
         setErrorToastOpen(true);
         return Promise.reject(error);
+      })
+      .finally(function (error) {
+        setSpinner(false);
       });
   };
 
@@ -244,6 +263,9 @@ function App(props) {
         </Toolbar>
       </AppBar>
       <div>{gameGrid()}</div>
+      <Backdrop className={classes.backdrop} open={isSpinnerOn}>
+        <CircularProgress color="inherit" />
+      </Backdrop>
       <Snackbar
         open={isErrorToastOpen}
         autoHideDuration={6000}
