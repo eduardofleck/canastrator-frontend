@@ -7,6 +7,7 @@ import Snackbar from "@material-ui/core/Snackbar";
 import MuiAlert from "@material-ui/lab/Alert";
 import Backdrop from "@material-ui/core/Backdrop";
 import CircularProgress from "@material-ui/core/CircularProgress";
+import Menu from "@material-ui/core/Menu";
 import MenuItem from "@material-ui/core/MenuItem";
 import Select from "@material-ui/core/Select";
 import AppBar from "@material-ui/core/AppBar";
@@ -39,6 +40,7 @@ function App(props) {
   const [isErrorToastOpen, setErrorToastOpen] = useState(false);
   const [isSpinnerOn, setSpinner] = useState(false);
   const [lastError, setLastError] = useState("");
+  const [anchorEl, setAnchorEl] = React.useState(null);
 
   const useStyles = makeStyles((theme) => ({
     absoluteRight: {
@@ -70,11 +72,15 @@ function App(props) {
     window.history.pushState({ path: refresh }, "", refresh);
   };
 
-  const onLanguageChange = (e) => {
-    let newLang = e.target.value;
+  const handleClickLanguage = (event) => {
+    setAnchorEl(event.currentTarget);
+  };
+
+  const onLanguageChange = (newLang) => {
     console.log("language set:", newLang);
     setLanguage(newLang);
     props.i18n.changeLanguage(newLang);
+    setAnchorEl(null);
   };
 
   const handleCloseErrorToast = (e) => {
@@ -187,6 +193,14 @@ function App(props) {
       });
   };
 
+  const languageFlag = () => {
+    if (language === "en") {
+      return <Flag src={flagUK} />;
+    } else if (language === "pt") {
+      return <Flag src={flagBR} />;
+    }
+  };
+
   const gameGrid = () => {
     if (appView === "welcome") {
       return <ViewWelcome startNewGame={newGame}></ViewWelcome>;
@@ -242,7 +256,31 @@ function App(props) {
           <Button onClick={shareGame} color="inherit" disabled={!game.token}>
             <Trans>menu.shareGame</Trans>
           </Button>
-          <Select
+          <Button
+            className={classes.absoluteRight}
+            aria-controls="language-menu"
+            aria-haspopup="true"
+            onClick={handleClickLanguage}
+          >
+            {languageFlag()}
+          </Button>
+          <Menu anchorEl={anchorEl} keepMounted open={Boolean(anchorEl)}>
+            <MenuItem
+              onClick={() => {
+                onLanguageChange("en");
+              }}
+            >
+              <Flag src={flagUK} />
+            </MenuItem>
+            <MenuItem
+              onClick={() => {
+                onLanguageChange("pt");
+              }}
+            >
+              <Flag src={flagBR} />
+            </MenuItem>
+          </Menu>
+          {/* <Select
             className={classes.absoluteRight}
             variant="outlined"
             labelId="demo-customized-select-label"
@@ -257,7 +295,7 @@ function App(props) {
             <MenuItem value="pt">
               <Flag src={flagBR} />
             </MenuItem>
-          </Select>
+          </Select> */}
         </Toolbar>
       </AppBar>
       <div>{gameGrid()}</div>
