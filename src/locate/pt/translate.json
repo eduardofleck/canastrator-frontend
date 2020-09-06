@@ -11,8 +11,11 @@
       "goodGame": "Bom jogo!"
     },
     "newGame": {
-      "player": "Jogador",
       "addPlayer": "Mais um jogador"
+    },
+    "newGameWarning": {
+      "gameActiveTittle": "Você já tem um jogo ativo",
+      "doWannaStartAnyways": "Dejesa iniciar um novo jogo mesmo assim?"
     },
     "share": {
       "shareThisGame": "Compartilhar este jogo",
@@ -24,7 +27,11 @@
       "name": "Nome",
       "close": "Fechar",
       "letsPlay": "Jogar",
-      "score": "Pontuação"
+      "score": "Pontuação",
+      "save": "Salvar",
+      "no": "Não",
+      "yes": "Sim",
+      "player": "Jogador"
     }
   }
 }
