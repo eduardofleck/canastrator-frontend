@@ -15,9 +15,9 @@ i18n
       pt: languagePT,
     },
     /* default language when load the website in browser */
-    lng: "en",
+    //lng: "pt",
     /* When react i18next not finding any language to as default in borwser */
-    fallbackLng: "en",
+    fallbackLng: "pt",
     /* debugger For Development environment */
     debug: true,
     ns: ["translations"],
@@ -32,6 +32,7 @@ i18n
       bindI18n: "languageChanged loaded",
       bindStore: "added removed",
       nsMode: "default",
+      useSuspense: false,
     },
   });
 

@@ -29,7 +29,7 @@ function ViewShareGame(props) {
         setQrCodeData(imageBase64);
       })
       .catch((err) => {
-        console.log("Erro");
+        console.log("Error creating QRCode: ", err);
       });
   }, []);
 

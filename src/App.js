@@ -16,6 +16,7 @@ import Select from "@material-ui/core/Select";
 import styled from "styled-components";
 import flagBR from "./images/flagBR.png";
 import flagUK from "./images/flagUK.png";
+import { makeStyles, useTheme } from "@material-ui/core/styles";
 
 const Flag = styled.img`
   display: block;
@@ -34,6 +35,15 @@ function App(props) {
 
   const [language, setLanguage] = useState("en");
 
+  const useStyles = makeStyles((theme) => ({
+    absoluteRight: {
+      position: "absolute",
+      right: theme.spacing(2),
+    },
+  }));
+
+  const classes = useStyles();
+
   useEffect(() => {
     if (window.location.pathname.replace("/", "") != "") {
       //Validates if is token?
@@ -41,13 +51,12 @@ function App(props) {
     } else {
       setAppView("welcome");
     }
+    setLanguage(props.i18n.language);
   }, []);
 
   const loadGame = (token) => {
-    console.log(token);
     setAppView("game");
     axios.get(`/game/full/${token}`).then((res) => {
-      console.log(res);
       setGame(res.data);
       addTokenUrl(res.data.token);
     });
@@ -57,11 +66,14 @@ function App(props) {
     var refresh =
       window.location.protocol + "//" + window.location.host + "/" + token;
 
+    if (window.location.search) refresh = refresh + window.location.search;
+
     window.history.pushState({ path: refresh }, "", refresh);
   };
 
   const onLanguageChange = (e) => {
     let newLang = e.target.value;
+    console.log("language set:", newLang);
     setLanguage(newLang);
     props.i18n.changeLanguage(newLang);
   };
@@ -101,10 +113,7 @@ function App(props) {
       },
     };
 
-    console.log(newGame);
-
     axios.post(`/game/new-game`, newGame).then((res) => {
-      console.log(res);
       setGame(res.data);
       addTokenUrl(res.data.token);
       setGameView();
@@ -112,8 +121,6 @@ function App(props) {
   };
 
   const saveNewRound = (round) => {
-    console.log(round);
-
     var scores = [];
     round.forEach((roundScore) => {
       scores.push({
@@ -130,7 +137,6 @@ function App(props) {
     };
 
     axios.post(`/game/new-round`, newRound).then((res) => {
-      console.log(res);
       setGame(res.data);
       setGameView(null);
     });
@@ -140,12 +146,12 @@ function App(props) {
     if (appView === "welcome") {
       return <ViewWelcome startNewGame={newGame}></ViewWelcome>;
     } else if (appView === "shareGame") {
-      var url =
-        window.location.protocol +
-        "//" +
-        window.location.host +
-        window.location.pathname;
-      return <ViewShareGame url={url} closeView={setGameView}></ViewShareGame>;
+      return (
+        <ViewShareGame
+          url={window.location.href}
+          closeView={setGameView}
+        ></ViewShareGame>
+      );
     }
     if (appView === "newGame") {
       if (game.token) {
@@ -188,6 +194,8 @@ function App(props) {
             <Trans>menu.shareGame</Trans>
           </Button>
           <Select
+            className={classes.absoluteRight}
+            variant="outlined"
             labelId="demo-customized-select-label"
             id="demo-customized-select"
             value={language}
