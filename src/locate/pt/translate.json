@@ -31,7 +31,8 @@
       "save": "Salvar",
       "no": "Não",
       "yes": "Sim",
-      "player": "Jogador"
+      "player": "Jogador",
+      "errorAction": "Opa, não foi possível completar essa solicitação... Foi mal =("
     }
   }
 }

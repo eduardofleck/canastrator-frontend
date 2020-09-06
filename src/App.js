@@ -17,6 +17,8 @@ import styled from "styled-components";
 import flagBR from "./images/flagBR.png";
 import flagUK from "./images/flagUK.png";
 import { makeStyles, useTheme } from "@material-ui/core/styles";
+import Snackbar from "@material-ui/core/Snackbar";
+import MuiAlert from "@material-ui/lab/Alert";
 
 const Flag = styled.img`
   display: block;
@@ -32,8 +34,9 @@ function App(props) {
   });
 
   const [appView, setAppView] = useState("game");
-
   const [language, setLanguage] = useState("en");
+  const [isErrorToastOpen, setErrorToastOpen] = useState(false);
+  const [lastError, setLastError] = useState("");
 
   const useStyles = makeStyles((theme) => ({
     absoluteRight: {
@@ -77,6 +80,11 @@ function App(props) {
     setLanguage(newLang);
     props.i18n.changeLanguage(newLang);
   };
+
+  const handleCloseErrorToast = (e) => {
+    setErrorToastOpen(false);
+  };
+
   const newGame = (e) => {
     setAppView("newGame");
   };
@@ -113,11 +121,19 @@ function App(props) {
       },
     };
 
-    axios.post(`/game/new-game`, newGame).then((res) => {
-      setGame(res.data);
-      addTokenUrl(res.data.token);
-      setGameView();
-    });
+    axios
+      .post(`/game/new-game`, newGame)
+      .then((res) => {
+        setGame(res.data);
+        addTokenUrl(res.data.token);
+        setGameView();
+      })
+      .catch(function (error) {
+        console.log("Show error notification!");
+        setLastError(error);
+        setErrorToastOpen(true);
+        return Promise.reject(error);
+      });
   };
 
   const saveNewRound = (round) => {
@@ -183,6 +199,10 @@ function App(props) {
     }
   };
 
+  function Alert(props) {
+    return <MuiAlert elevation={6} variant="filled" {...props} />;
+  }
+
   return (
     <div>
       <AppBar position="static">
@@ -211,6 +231,15 @@ function App(props) {
         </Toolbar>
       </AppBar>
       <div>{gameGrid()}</div>
+      <Snackbar
+        open={isErrorToastOpen}
+        autoHideDuration={6000}
+        onClose={handleCloseErrorToast}
+      >
+        <Alert onClose={handleCloseErrorToast} severity="error">
+          <Trans>generic.errorAction</Trans>
+        </Alert>
+      </Snackbar>
     </div>
   );
 }

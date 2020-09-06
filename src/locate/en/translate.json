@@ -31,7 +31,8 @@
       "save": "save",
       "no": "no",
       "yes": "yes",
-      "player": "player"
+      "player": "player",
+      "errorAction": "Ops, it was not possible to do it... I`m sorry =("
     }
   }
 }
