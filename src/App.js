@@ -59,10 +59,17 @@ function App(props) {
 
   const loadGame = (token) => {
     setAppView("game");
-    axios.get(`/game/full/${token}`).then((res) => {
-      setGame(res.data);
-      addTokenUrl(res.data.token);
-    });
+    axios
+      .get(`/game/full/${token}`)
+      .then((res) => {
+        setGame(res.data);
+        addTokenUrl(res.data.token);
+      })
+      .catch(function (error) {
+        setLastError(error);
+        setErrorToastOpen(true);
+        return Promise.reject(error);
+      });
   };
 
   const addTokenUrl = (token) => {
@@ -129,7 +136,6 @@ function App(props) {
         setGameView();
       })
       .catch(function (error) {
-        console.log("Show error notification!");
         setLastError(error);
         setErrorToastOpen(true);
         return Promise.reject(error);
@@ -152,10 +158,17 @@ function App(props) {
       },
     };
 
-    axios.post(`/game/new-round`, newRound).then((res) => {
-      setGame(res.data);
-      setGameView(null);
-    });
+    axios
+      .post(`/game/new-round`, newRound)
+      .then((res) => {
+        setGame(res.data);
+        setGameView(null);
+      })
+      .catch(function (error) {
+        setLastError(error);
+        setErrorToastOpen(true);
+        return Promise.reject(error);
+      });
   };
 
   const gameGrid = () => {
