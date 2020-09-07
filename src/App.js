@@ -9,7 +9,6 @@ import Backdrop from "@material-ui/core/Backdrop";
 import CircularProgress from "@material-ui/core/CircularProgress";
 import Menu from "@material-ui/core/Menu";
 import MenuItem from "@material-ui/core/MenuItem";
-import Select from "@material-ui/core/Select";
 import AppBar from "@material-ui/core/AppBar";
 import Toolbar from "@material-ui/core/Toolbar";
 import Button from "@material-ui/core/Button";
@@ -253,7 +252,11 @@ function App(props) {
           <Button onClick={newGame} color="inherit">
             <Trans>menu.newGame</Trans>
           </Button>
-          <Button onClick={shareGame} color="inherit" disabled={!game.token}>
+          <Button
+            onClick={shareGame}
+            color="inherit"
+            disabled={!game || !game.token}
+          >
             <Trans>menu.shareGame</Trans>
           </Button>
           <Button
