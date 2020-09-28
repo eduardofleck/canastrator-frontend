@@ -7,6 +7,7 @@ const Score = styled.div`
   width: 100%;
   justify-content: center;
   justify-items: center;
+  font-size: 22px;
 `;
 
 const ScoreBold = styled.div`
@@ -16,6 +17,7 @@ const ScoreBold = styled.div`
   justify-content: center;
   justify-items: center;
   font-weight: bold;
+  font-size: 22px;
 `;
 
 const ScoreTotalBold = styled.div`
@@ -25,6 +27,7 @@ const ScoreTotalBold = styled.div`
   justify-content: center;
   justify-items: center;
   font-weight: bold;
+  font-size: 22px;
 `;
 
 const ScoreTotal = styled.div`
@@ -33,6 +36,7 @@ const ScoreTotal = styled.div`
   width: 100%;
   justify-content: center;
   justify-items: center;
+  font-size: 22px;
 `;
 
 class ScoreLine extends Component {

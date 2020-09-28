@@ -20,7 +20,7 @@ const Score = styled.div`
 
 function ViewNewRoundScores(props) {
   const [inputList, setInputList] = useState([
-    { playerId: "", playerValue: "" },
+    { playerId: "", playerValue: "", playerScore: "" },
   ]);
 
   const useStyles = makeStyles((theme) => ({
@@ -43,18 +43,30 @@ function ViewNewRoundScores(props) {
 
   useEffect(() => {
     var playersState = [];
+
     props.game.players.forEach((player) => {
+      var roundScore = null;
+      if (props.roundEdit) {
+        roundScore = player.scores.find(
+          (score) => score.round == props.roundEdit
+        ).score;
+      }
       playersState.push({
         playerId: player.id,
         playerName: player.name,
-        playerScore: null,
+        playerScore: roundScore,
       });
     });
+
     setInputList(playersState);
   }, [props.game.players]);
 
   const handleSubmit = () => {
-    props.saveNewRound(inputList);
+    if (props.roundEdit) {
+      props.saveRound(props.roundEdit, inputList);
+    } else {
+      props.saveRound(null, inputList);
+    }
   };
 
   const closeView = () => {
@@ -85,7 +97,7 @@ function ViewNewRoundScores(props) {
               <TextField
                 className={classes.textInput}
                 name={player.playerId}
-                value={player.playerScore}
+                defaultValue={player.playerScore}
                 required
                 type="number"
                 onChange={handleChange}

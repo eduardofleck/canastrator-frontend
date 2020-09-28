@@ -3,6 +3,7 @@ import styled from "styled-components";
 import ScoreLine from "./ScoreLine";
 import Fab from "@material-ui/core/Fab";
 import AddIcon from "@material-ui/icons/Add";
+import Edit from "@material-ui/icons/Edit";
 import { makeStyles, useTheme } from "@material-ui/core/styles";
 
 const ScoreBoardGrid = styled.div`
@@ -14,6 +15,7 @@ const ScoreBoardGrid = styled.div`
 const TeamsHeader = styled.div`
   display: grid;
   width: 100%;
+  height: 55px;
   grid-template-columns: 1fr;
   justify-content: center;
   justify-items: center;
@@ -44,6 +46,13 @@ function ScoreBoard(props) {
     props.newRound();
   };
 
+  var rounds = [];
+  if (props.game.players[0]) {
+    (props.game.players[0].scores || []).forEach((score) => {
+      rounds.push(score.round);
+    });
+  }
+
   return (
     <div>
       <ScoreBoardGrid>
@@ -55,6 +64,16 @@ function ScoreBoard(props) {
             <ScoreLine player={player}></ScoreLine>
           </div>
         ))}
+        <div>
+          <TeamsHeader>
+            <h2></h2>
+          </TeamsHeader>
+          {rounds.map((score) => (
+            <div onClick={() => props.editRound(score)}>
+              <Edit></Edit>
+            </div>
+          ))}
+        </div>
       </ScoreBoardGrid>
       <Fab
         className={classes.fab}

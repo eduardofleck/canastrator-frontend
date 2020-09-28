@@ -39,7 +39,8 @@ function App(props) {
   const [isErrorToastOpen, setErrorToastOpen] = useState(false);
   const [isSpinnerOn, setSpinner] = useState(false);
   const [lastError, setLastError] = useState("");
-  const [anchorEl, setAnchorEl] = React.useState(null);
+  const [anchorEl, setAnchorEl] = useState(null);
+  const [roundEdit, setRoundEdit] = React.useState(0);
 
   const useStyles = makeStyles((theme) => ({
     absoluteRight: {
@@ -159,9 +160,9 @@ function App(props) {
       });
   };
 
-  const saveNewRound = (round) => {
+  const saveRound = (roundId, roundData) => {
     var scores = [];
-    round.forEach((roundScore) => {
+    roundData.forEach((roundScore) => {
       scores.push({
         player: roundScore.playerId,
         score: roundScore.playerScore,
@@ -171,6 +172,7 @@ function App(props) {
     var newRound = {
       round: {
         game: game.id,
+        round: roundId,
         scores,
       },
     };
@@ -190,6 +192,12 @@ function App(props) {
       .finally(function (error) {
         setSpinner(false);
       });
+  };
+
+  const editRound = (e) => {
+    console.log(e);
+    setRoundEdit(e);
+    setAppView("editRound");
   };
 
   const languageFlag = () => {
@@ -232,12 +240,27 @@ function App(props) {
       return (
         <ViewNewRoundScores
           game={game}
-          saveNewRound={saveNewRound}
+          saveRound={saveRound}
+          closeView={setGameView}
+        ></ViewNewRoundScores>
+      );
+    } else if (appView === "editRound") {
+      return (
+        <ViewNewRoundScores
+          game={game}
+          roundEdit={roundEdit}
+          saveRound={saveRound}
           closeView={setGameView}
         ></ViewNewRoundScores>
       );
     } else if (appView === "game") {
-      return <ScoreBoard game={game} newRound={newRound}></ScoreBoard>;
+      return (
+        <ScoreBoard
+          game={game}
+          editRound={editRound}
+          newRound={newRound}
+        ></ScoreBoard>
+      );
     }
   };
 
