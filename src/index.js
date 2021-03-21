@@ -7,7 +7,9 @@ import axios from "axios";
 import { I18nextProvider } from "react-i18next";
 import i18n from "./i18n";
 
-axios.defaults.baseURL = process.env.REACT_APP_BACKEND_URL;
+axios.defaults.baseURL = process.env.REACT_APP_BACKEND_URL
+  ? process.env.REACT_APP_BACKEND_URL
+  : "https://canastrator-backend.herokuapp.com";
 
 ReactDOM.render(
   <React.StrictMode>
